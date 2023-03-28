@@ -1,23 +1,25 @@
-import './App.css';
+import { Router } from './Router';
+import React from 'react';
+import { BrowserRouter, Navigate } from "react-router-dom";
 
 export function RequireAuth({ children }) {
     // Get user from local storage
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = null;
 
     if (user === null) {
-        //redirect to login
+        return <Navigate to="/login" replace={true} />;
     } else {
         return children;
     }
 }
 
 function App() {
-
-//Navigation dans requireAuth
-  return (
-      //TODO ROUTER
-      <div></div>
-  );
+    return (
+        <BrowserRouter>
+            <RequireAuth />
+            <Router />
+        </BrowserRouter>
+    );
 }
 
 export default App;
