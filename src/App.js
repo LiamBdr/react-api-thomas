@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter, Navigate } from "react-router-dom";
 
 export function RequireAuth({ children }) {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem('token');
 
     if (user === null) {
         return <Navigate to="/login" replace={true} />;
