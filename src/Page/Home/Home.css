@@ -52,3 +52,20 @@
     left: 0;
     object-fit: cover;
 }
+
+.logout-button {
+    position: relative;
+    background-color: rgb(231, 0, 0);
+    color: white;
+    font-weight: 800;
+    font-size: 1.2rem;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.logout-button:hover {
+    background-color: rgb(255, 0, 0);
+}

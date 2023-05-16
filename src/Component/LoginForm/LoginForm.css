@@ -1,0 +1,60 @@
+/* LoginForm.css */
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .credentials-and-password-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 300px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-page-call-to-action {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-page-call-to-action:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Input Component Styles */
+  
+  .input-div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-div label {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input-div input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .input-div input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .input-div input::placeholder {
+    color: #999;
+  }
+  

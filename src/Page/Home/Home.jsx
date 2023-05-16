@@ -39,10 +39,18 @@ const HomePage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
   return (
     <div>
       <h1>Home page</h1>
       <p>Bonjour {user && user.email}</p>
+      <button className="logout-button" onClick={handleLogout}>
+        Déconnexion
+      </button>
       <p>Liste des personnages Rick et Morty</p>
       <InfiniteScroll
         dataLength={characters.length}

@@ -1,99 +1,83 @@
-// Genral imports
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import axios from 'axios';
-
-// Style imports
 import './LoginForm.css';
 import Input from '../Input/Input';
 
-const LoginForm = ({handleSubmit}) => {
+const LoginForm = ({ handleSubmit }) => {
+  const [credentials, setCredentials] = useState({
+    login: '',
+    password: ''
+  });
 
-    const [credentials, setCredentials] = useState({
-        login: '',
-        password: ''
-    });
+  const handleChange = (key, value) => {
+    setCredentials((prevState) => ({
+      ...prevState,
+      [key]: value
+    }));
+  };
 
-    const handleChange = ({key, value}) => {
-        setCredentials((prevState) => {
-            return {...prevState, [key]: value};
-        });
+  const handleLoginChange = (event) => {
+    const { value } = event.currentTarget;
+    handleChange('login', value);
+  };
+
+  const handlePasswordChange = (event) => {
+    const { value } = event.currentTarget;
+    handleChange('password', value);
+  };
+
+  const handleSubmitForm = async (event) => {
+    event.preventDefault();
+    const data = {
+      username: credentials.login,
+      password: credentials.password
     };
 
-    const handleLoginChange = (event) => {
-        handleChange({
-            key: 'login',
-            value: event.currentTarget.value
-        });
-    };
+    try {
+      const response = await axios.post('https://127.0.0.1:8000/api/login_check', data);
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      window.location.href = '/';
+    } catch (error) {
+      console.log(error.response.data);
+      localStorage.removeItem('token');
+    }
 
-    const handlePasswordChange = (event) => {
-        handleChange({
-            key: 'password',
-            value: event.currentTarget.value
-        });
-    };
+    await handleSubmit(credentials);
+  };
 
-    const handleSubmitForm = async(event) => {
-        event.preventDefault();
-        const data = {
-            username: credentials.login,
-            password: credentials.password
-        }
-        axios.post('https://127.0.0.1:8000/api/login_check', data)
-            .then((res) => {
-                console.log(res.data)
-                // set token in local storage
-                localStorage.setItem('token', res.data.token)
-                window.location.href = '/';
-            })
-            .catch((err) => {
-                console.log(err.response.data)
-                localStorage.removeItem('token')
-            })
-        await handleSubmit(credentials);
-    };
-    //TODO Add Credentials Inputs (With Input Component)
-    return (
-        <>
-
-            <form id="login-form" onSubmit={handleSubmitForm}>
-
-                <div className='credentials-and-password-container'>
-
-                    {/* Login Input */}
-                    <Input
-                        id='login'
-                        label='Login'
-                        value={credentials.login}
-                        type='text'
-                        required={true}
-                        placeholder='Login'
-                        handleChange={handleLoginChange}
-                    />
-
-                    {/* Password Input */}
-                    <Input
-                        id='password'
-                        label='Password'
-                        value={credentials.password}
-                        type='password'
-                        required={true}
-                        placeholder='Password'
-                        handleChange={handlePasswordChange}
-                    />
-                    
-                    <button 
-                        className='login-page-call-to-action'
-                        type="submit"
-                    >
-                        Submit
-                    </button>
-
-                </div>
-            </form>
-        </>
-    );
+  return (
+    <>
+      <form id="login-form" onSubmit={handleSubmitForm}>
+        <div className='credentials-and-password-container'>
+          <Input
+            id='login'
+            label='Email'
+            value={credentials.login}
+            type='text'
+            required={true}
+            placeholder='Email'
+            handleChange={handleLoginChange}
+          />
+          <Input
+            id='password'
+            label='Mot de passe'
+            value={credentials.password}
+            type='password'
+            required={true}
+            placeholder='Mot de passe'
+            handleChange={handlePasswordChange}
+          />
+          <button
+            className='login-page-call-to-action'
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </>
+  );
 };
 
 export default LoginForm;
