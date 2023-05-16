@@ -1,38 +1,40 @@
-import { Router } from './Router';
 import React from 'react';
-import { BrowserRouter, Navigate } from "react-router-dom";
-import axios from 'axios';
+import {Router} from "./Router";
+import {BrowserRouter, Navigate} from "react-router-dom";
+import axios from "axios";
 
 export function RequireAuth() {
     const token = localStorage.getItem('token');
 
     if (token === null) {
-        return <Navigate to="/login" replace={true} />;
-    }
+        return <Navigate to="/login" replace={true}/>;
+    } else {
 
-    axios.get('http://127.0.0.1:8000/api/users/me', {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    })
-        .then((response) => {
-            console.log(response);
-
-            if (response.status !== 200 || response.data === null) {
-                localStorage.removeItem('token');
-                return <Navigate to="/login" replace={true} />;
+        axios.get('https://127.0.0.1:8000/api/users/me', {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Access-Control-Allow-Origin': "*",
+                'Access-Control-Allow-Methods': "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                'Content-Type': 'application/json',
             }
         })
-        .catch((error) => {
-            console.log(error);
-        });
+            .then((res) => {
+                localStorage.setItem('user', JSON.stringify(res.data));
+            })
+            .catch((err) => {
+                console.log('ERROR');
+                console.log(err);
+            })
+
+        return null;
+    }
 }
 
 function App() {
     return (
         <BrowserRouter>
-            <RequireAuth />
-            <Router />
+            <RequireAuth/>
+            <Router/>
         </BrowserRouter>
     );
 }
